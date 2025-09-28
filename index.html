@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridgify - Partner & Bump System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #5865f2;
+            --primary-dark: #4752c4;
+            --secondary: #57f287;
+            --background: #36393f;
+            --surface: #2f3136;
+            --surface-light: #40444b;
+            --text: #ffffff;
+            --text-muted: #b9bbbe;
+            --border: #4f545c;
+            --success: #57f287;
+            --warning: #fee75c;
+            --error: #ed4245;
+            --gradient: linear-gradient(135deg, #5865f2, #57f287);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section:nth-child(even) {
+            background: var(--surface);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .card p {
+            color: var(--text-muted);
+        }
+
+        /* Command Reference */
+        .command-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .command {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .command-header {
+            background: var(--primary);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .command-header i {
+            font-size: 1.2rem;
+        }
+
+        .command-header h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .command-body {
+            padding: 1.5rem;
+        }
+
+        .command-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .command-usage {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .command-params {
+            margin-top: 1rem;
+        }
+
+        .param {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .param:last-child {
+            border-bottom: none;
+        }
+
+        .param-name {
+            font-weight: 600;
+            color: var(--secondary);
+            min-width: 120px;
+        }
+
+        .param-desc {
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .param-required {
+            color: var(--error);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .param-optional {
+            color: var(--warning);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Setup Steps */
+        .setup-steps {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 3rem;
+            height: 3rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .step-image {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        /* FAQ */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: var(--surface-light);
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--primary);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 1.5rem;
+            max-height: 200px;
+        }
+
+        .faq-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Premium Features */
+        .premium-card {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .premium-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            color: #333;
+        }
+
+        .premium-feature i {
+            color: #d4af37;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+/* Legal Section */
+        .legal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legal-btn {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legal-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            background: var(--primary);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: calc(90vh - 100px);
+        }
+
+        .modal-body h4 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .modal-body p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .modal-body ul {
+            color: var(--text-muted);
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body code {
+            background: var(--background);
+            color: var(--secondary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.3rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--surface);
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid var(--border);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .highlight {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+    code {
+        font-family: monospace;
+        color: #c7254e;
+        background-color: #f9f2f4;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#overview" class="nav-brand">
+                <i class="fas fa-robot"></i> Bridgify
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#premium">Premium Features</a></li>
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#setup">Setup Guide</a></li>
+                <li><a href="#legal">Legal</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="https://discord.com/invite/VS8Aea9hrj">Support</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discord Partnership Bot</h1>
+            <p>The ultimate solution for Discord server partnerships, bumping, and growth with premium automation features.</p>
+            <div class="hero-buttons">
+                <a href="#getting-started" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+                <a href="#commands" class="btn btn-secondary">
+                    <i class="fas fa-book"></i> View Commands
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Overview</h2>
+                <p>Discover what makes our Discord bot the perfect solution for server growth and partnerships</p>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Partner System</h3>
+                    <p>Automated partnership requests with other Discord servers. Find and connect with servers that match your community's interests and categories.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3>Bump System</h3>
+                    <p>Promote your server to other communities automatically. Increase visibility and attract new members with our intelligent bumping system.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Premium Perks</h3>
+                    <p>Unlock advanced automation features including AutoBump, AutoPartner, faster cooldowns, and priority processing for maximum growth.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics</h3>
+                    <p>Track your server's growth with detailed analytics showing joins, partnerships, bumps, and weekly performance metrics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Getting Started</h2>
+                <p>Follow these simple steps to set up the bot and start growing your Discord server</p>
+            </div>
+            <div class="setup-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Invite the Bot</h3>
+                        <p>Add the bot to your Discord server with the necessary permissions for channel management and message sending.</p>
+                        <div class="code-block">Required Permissions: Send Messages, Embed Links, Read Message History, Use Slash Commands</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Run Initial Setup</h3>
+                        <p>Use the <span class="highlight">/setup</span> command to configure your partner channel, bump channel, categories, and log channel.</p>
+                        <div class="code-block">/setup partner_channel:#partnerships bump_channel:#advertising categories:Gaming log_channel:#bot-logs</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Understanding Categories</h3>
+                        <p>Categories help match your server with relevant partners. Choose from: Community, Gaming, Education, Technology, Arts, Music, Sports, or Other. This affects how the bot networks with other servers.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Configure Channels</h3>
+                        <p><strong>Partner Channel:</strong> Where partnership requests from other servers will be posted<br>
+                        <strong>Bump Channel:</strong> Where your server ads will be sent to other servers<br>
+                        <strong>Log Channel:</strong> Where bot activities and notifications will be logged</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Test Your Setup</h3>
+                        <p>Try your first bump with <span class="highlight">/bump</span> to ensure everything is working correctly!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Features Section -->
+    <section id="premium" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Premium Features</h2>
+                <p>Unlock powerful automation and advanced features to supercharge your server growth</p>
+            </div>
+            <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>How to Activate Premium</h3>
+                    <p>Run <span class="highlight">/settings</span> and click the "Activate Premium" button. You can also earn premium through voting with <span class="highlight">/claimvote</span> after 30 votes!</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>AutoBump</h3>
+                    <p>Automatically bump your server at optimal intervals without manual intervention. Never miss a promotion opportunity!</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>AutoPartner</h3>
+                    <p>Automatically send partnership requests to relevant servers based on your categories. Expand your network effortlessly.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Auto-Approve</h3>
+                    <p>Automatically approve partnership requests from trusted servers, streamlining your partnership process.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Faster Cooldowns</h3>
+                    <p>Reduced cooldown times for bumping and partnership requests, allowing for more frequent promotional activities.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Priority Queue</h3>
+                    <p>Your server gets priority placement in partnership queues and bump rotations for maximum visibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slash Commands Reference -->
+    <section id="commands" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Slash Commands Reference</h2>
+                <p>Complete guide to all available bot commands and their usage</p>
+            </div>
+            <div class="command-grid">
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-bell"></i>
+                        <h4>/bump-reminders</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Toggle bump reminders on or off for your server</p>
+                        <div class="command-usage">/bump-reminders state:ON</div>
+                        <div class="command-params">
+                            <div class="param">
+                                <span class="param-name">state</span>
+                                <span class="param-desc">Turn reminders ON or OFF</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                        </div>
+                        <p><strong>Example:</strong> <code>/bump-reminders state:ON</code></p>
+                        <p><strong>Response:</strong> "Bump reminders have been enabled for this server!"</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-handshake"></i>
+                        <h4>/partner-reminders</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Toggle partner reminders on or off for your server</p>
+                        <div class="command-usage">/partner-reminders state:OFF</div>
+                        <div class="command-params">
+                            <div class="param">
+                                <span class="param-name">state</span>
+                                <span class="param-desc">Turn reminders ON or OFF</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                        </div>
+                        <p><strong>Example:</strong> <code>/partner-reminders state:OFF</code></p>
+                        <p><strong>Response:</strong> "Partner reminders have been disabled for this server."</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-cog"></i>
+                        <h4>/setup</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Setup the bot for your server with all necessary configurations</p>
+                        <div class="command-usage">/setup partner_channel:#partnerships bump_channel:#advertising categories:Gaming log_channel:#logs referral_code:abc123</div>
+                        <div class="command-params">
+                            <div class="param">
+                                <span class="param-name">partner_channel</span>
+                                <span class="param-desc">Channel where partner ads will be sent</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">bump_channel</span>
+                                <span class="param-desc">Channel where bump ads will be sent</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">categories</span>
+                                <span class="param-desc">Community, Gaming, Education, Technology, Arts, Music, Sports, Other</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">log_channel</span>
+                                <span class="param-desc">Channel where logs will be sent</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">referral_code</span>
+                                <span class="param-desc">Optional referral code (e.g., jplm8hqc)</span>
+                                <span class="param-optional">Optional</span>
+                            </div>
+                        </div>
+                        <p><strong>Response:</strong> "✅ Server setup completed successfully! Your bot is now ready to use."</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-bullhorn"></i>
+                        <h4>/bump</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Bump your server advertisement to other servers!</p>
+                        <div class="command-usage">/bump</div>
+                        <p><strong>Example:</strong> <code>/bump</code></p>
+                        <p><strong>Response:</strong> "🚀 Your server has been bumped! Next bump available in 2 hours."</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-users"></i>
+                        <h4>/partner</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Request a partnership with a random or specific server</p>
+                        <div class="command-usage">/partner target_guild_id:123456789</div>
+                        <div class="command-params">
+                            <div class="param">
+                                <span class="param-name">target_guild_id</span>
+                                <span class="param-desc">Optional: Provide server ID for direct partner request</span>
+                                <span class="param-optional">Optional</span>
+                            </div>
+                        </div>
+                        <p><strong>Example Random:</strong> <code>/partner</code></p>
+                        <p><strong>Example Direct:</strong> <code>/partner target_guild_id:123456789</code></p>
+                        <p><strong>Response:</strong> "🤝 Partnership request sent! Waiting for approval..."</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-gift"></i>
+                        <h4>/referral</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Shows your referral info and options</p>
+                        <div class="command-usage">/referral</div>
+                        <p><strong>Example:</strong> <code>/referral</code></p>
+                        <p><strong>Response:</strong> Shows your referral code, statistics, and rewards information</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-network-wired"></i>
+                        <h4>/masspartner</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Mass partner your server with multiple servers (Premium Feature)</p>
+                        <div class="command-usage">/masspartner</div>
+                        <p><strong>Example:</strong> <code>/masspartner</code></p>
+                        <p><strong>Response:</strong> "🔥 Mass partnership initiated! Sending requests to 10 servers..."</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-sliders-h"></i>
+                        <h4>/settings</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Configure the bot and activate premium features</p>
+                        <div class="command-usage">/settings</div>
+                        <p><strong>Example:</strong> <code>/settings</code></p>
+                        <p><strong>Response:</strong> Interactive menu with options to configure bot settings and activate premium</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>/analytics</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Show weekly server growth chart with joins, partners, and bumps</p>
+                        <div class="command-usage">/analytics</div>
+                        <p><strong>Example:</strong> <code>/analytics</code></p>
+                        <p><strong>Response:</strong> Detailed chart showing your server's growth metrics over the past week</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-flag"></i>
+                        <h4>/report</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Report a user to the staff</p>
+                        <div class="command-usage">/report user:@BadUser reason:Spam and harassment</div>
+                        <div class="command-params">
+                            <div class="param">
+                                <span class="param-name">user</span>
+                                <span class="param-desc">User to report</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">reason</span>
+                                <span class="param-desc">Reason for the report</span>
+                                <span class="param-required">Required</span>
+                            </div>
+                        </div>
+                        <p><strong>Example:</strong> <code>/report user:@ToxicUser reason:Inappropriate behavior</code></p>
+                        <p><strong>Response:</strong> "Report submitted successfully. Staff will review your report."</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-question-circle"></i>
+                        <h4>/help</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Show help for all commands</p>
+                        <div class="command-usage">/help</div>
+                        <p><strong>Example:</strong> <code>/help</code></p>
+                        <p><strong>Response:</strong> Comprehensive help menu with all available commands and their descriptions</p>
+                    </div>
+                </div>
+
+                <div class="command">
+                    <div class="command-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h4>/bot-info</h4>
+                    </div>
+                    <div class="command-body">
+                        <p class="command-description">Displays detailed statistics and information about the bot</p>
+                        <div class="command-usage">/bot-info</div>
+                        <p><strong>Example:</strong> <code>/bot-info</code></p>
+                        <p><strong>Response:</strong> Shows bot version, uptime, server count, and other technical information</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Setup Walkthrough -->
+<section id="setup" class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Setup Walkthrough</h2>
+            <p>Detailed step-by-step guide with visual examples</p>
+        </div>
+        <div class="setup-steps">
+            
+            <!-- Step 1 -->
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Setting Partner/Bump Channels</h3>
+                    <p>Use <code>/setup</code> to designate specific channels for partnerships and bumps. Make sure these channels are appropriate and have proper permissions.</p>
+                    <div class="step-image">
+                        <img src="https://i.imgur.com/L2vAGmR.png" alt="Setup Screenshot" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Selecting Categories</h3>
+                    <p>Choose the category that best represents your server. This helps the bot match you with relevant partners:</p>
+                    <ul style="margin-left: 1.5rem; color: var(--text-muted);">
+                        <li><strong>Community:</strong> General discussion servers</li>
+                        <li><strong>Gaming:</strong> Game-focused servers</li>
+                        <li><strong>Education:</strong> Learning and educational content</li>
+                        <li><strong>Technology:</strong> Tech discussions and development</li>
+                        <li><strong>Arts:</strong> Creative and artistic content</li>
+                        <li><strong>Music:</strong> Music sharing and discussion</li>
+                        <li><strong>Sports:</strong> Sports-related content</li>
+                        <li><strong>Other:</strong> Servers that don't fit other categories</li>
+                    </ul>
+                    <div class="step-image">
+                        <img src="https://i.imgur.com/AC0vcEt.png" alt="Category Selection Screenshot" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Configuring Logs</h3>
+                    <p>Set up a dedicated log channel to monitor bot activities, partnership requests, and system notifications.</p>
+                    <div class="step-image">
+                        <img src="https://i.imgur.com/V02GLHm.png" alt="Log Setup Screenshot" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Enabling Reminders</h3>
+                    <p>Use <code>/bump-reminders ON</code> and <code>/partner-reminders ON</code> to get notified when cooldowns expire.</p>
+                    <div class="step-image">
+                        <img src="https://i.imgur.com/Bn9DYZm.png" alt="Reminder Setup Screenshot" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Testing with /bump</h3>
+                    <p>Run your first <code>/bump</code> command to test the setup and ensure everything works correctly.</p>
+                    <div class="step-image">
+                        <img src="https://i.imgur.com/HrlYZlT.png" alt="Bump Test Screenshot" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about the bot</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What happens after I bump my server?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>After bumping, your server advertisement is sent to other servers' bump channels based on category matching. You'll receive a confirmation message with the next available bump time (usually 2 hours for free users, faster for premium).</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I redeem premium features?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Run <code>/settings</code> and click the "Activate Premium" button. You can also earn premium for free by voting 30 times using <code>/claimvote</code> to track your progress.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What if I have issues with setup?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Join our support server for help, or use <code>/help</code> for command assistance. Make sure the bot has proper permissions: Send Messages, Embed Links, Read Message History, and Use Slash Commands.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I transfer premium to another server?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Premium features are typically server-specific. Contact support through our Discord server if you need assistance with premium transfers or have special circumstances.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long does premium last?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Premium duration varies by how it was obtained. Vote-based premium typically lasts 30 days. Check <code>/settings</code> to see your current premium status and expiration date.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Why am I not receiving partnership requests?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ensure your server is properly set up with <code>/setup</code>, your category is selected correctly, and your partner channel has proper permissions. Partnership requests are matched based on categories and server activity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Legal Section -->
+    <section id="legal" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Legal</h2>
+                <p>Terms of Service and Privacy Policy</p>
+            </div>
+            <div class="legal-buttons">
+                <button class="legal-btn" onclick="openModal('tos-modal')">
+                    <i class="fas fa-file-contract"></i>
+                    Terms of Service
+                </button>
+                <button class="legal-btn" onclick="openModal('privacy-modal')">
+                    <i class="fas fa-shield-alt"></i>
+                    Privacy Policy
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Support Section -->
+    <section id="support" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Support</h2>
+                <p>Need help? We're here to assist you!</p>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Invite Bot</h3>
+                    <p>Add the bot to your Discord server to get started with partnerships and bumping.</p>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1380207373611827220" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i> Invite Bot
+                    </a>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <h3>Support Server</h3>
+                    <p>Join our Discord server for live support, updates, and community discussions.</p>
+                    <a href="https://discord.com/invite/VS8Aea9hrj" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fab fa-discord"></i> Join Server
+                    </a>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Contact</h3>
+                    <p>For direct support or business inquiries, reach out to our team through Discord or email.</p>
+                    <div style="margin-top: 1rem; color: var(--text-muted);">
+                        <p><strong>Discord:</strong> https://discord.com/invite/VS8Aea9hrj</p>
+                        <p><strong>Email:</strong> bridgifyhelp@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Modals -->
+    <div id="tos-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Terms of Service</h3>
+                <button class="modal-close" onclick="closeModal('tos-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>1. Acceptance of Terms</h4>
+                <p>By adding this Discord bot to your server or using any of its features, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the bot.</p>
+                
+                <h4>2. Description of Service</h4>
+                <p>Our Discord bot provides server partnership and bumping services, including but not limited to:</p>
+                <ul>
+                    <li>Server advertisement bumping</li>
+                    <li>Partnership request management</li>
+                    <li>Analytics and tracking</li>
+                    <li>Premium features and rewards</li>
+                </ul>
+
+                <h4>3. User Responsibilities</h4>
+                <p>You agree to:</p>
+                <ul>
+                    <li>Use the bot in compliance with Discord's Terms of Service</li>
+                    <li>Not abuse or spam the bot's features</li>
+                    <li>Provide accurate information during setup</li>
+                    <li>Not attempt to exploit or hack the bot</li>
+                </ul>
+
+                <h4>4. Premium Features</h4>
+                <p>Premium features may be unlocked through voting, codes, or other methods. Premium benefits include faster cooldowns, automatic features, and priority processing. Premium access may expire and is subject to our policies.</p>
+
+                <h4>5. Data Usage</h4>
+                <p>The bot collects minimal data necessary for functionality, including server IDs, channel IDs, and usage statistics. We do not store message content or personal information beyond what's necessary for bot operation.</p>
+
+                <h4>6. Limitation of Liability</h4>
+                <p>The bot is provided "as is" without warranties. We are not liable for any damages arising from the use of the bot, including but not limited to service interruptions or data loss.</p>
+
+                <h4>7. Termination</h4>
+                <p>We reserve the right to terminate access to the bot for violations of these terms or Discord's Terms of Service. You may stop using the bot at any time by removing it from your server.</p>
+
+                <h4>8. Changes to Terms</h4>
+                <p>We may update these terms at any time. Continued use of the bot constitutes acceptance of any changes.</p>
+
+                <p><strong>Last updated:</strong> December 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacy-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Privacy Policy</h3>
+                <button class="modal-close" onclick="closeModal('privacy-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Information We Collect</h4>
+                <p>We collect only the information necessary for the bot to function:</p>
+                <ul>
+                    <li><strong>Server Information:</strong> Server ID, channel IDs, and basic server metadata</li>
+                    <li><strong>User Interactions:</strong> Command usage and interaction data</li>
+                    <li><strong>Analytics:</strong> Aggregated usage statistics for improvement purposes</li>
+                    <li><strong>Settings:</strong> Bot configuration preferences and premium status</li>
+                </ul>
+
+                <h4>What We Don't Collect</h4>
+                <ul>
+                    <li>Message content (except when specifically required for command functionality)</li>
+                    <li>Personal information like email addresses or real names</li>
+                    <li>Private conversations or DMs</li>
+                    <li>Sensitive user data</li>
+                </ul>
+
+                <h4>How We Use Your Information</h4>
+                <p>Collected information is used to:</p>
+                <ul>
+                    <li>Provide bot functionality and features</li>
+                    <li>Match servers for partnerships</li>
+                    <li>Deliver advertisements and bumps</li>
+                    <li>Maintain premium features</li>
+                    <li>Improve bot performance and features</li>
+                </ul>
+
+                <h4>Data Sharing</h4>
+                <p>We do not sell, trade, or share your data with third parties except:</p>
+                <ul>
+                    <li>When required by law</li>
+                    <li>To provide the core functionality of partnerships between servers</li>
+                    <li>With your explicit consent</li>
+                </ul>
+
+                <h4>Data Security</h4>
+                <p>We implement appropriate security measures to protect your data. However, no method of transmission over the internet is 100% secure.</p>
+
+                <h4>Data Retention</h4>
+                <p>We retain data only as long as necessary to provide our services. You can request data deletion by contacting us through our support server.</p>
+
+                <h4>Your Rights</h4>
+                <p>You have the right to:</p>
+                <ul>
+                    <li>Request access to your data</li>
+                    <li>Request deletion of your data</li>
+                    <li>Opt out of data collection by removing the bot</li>
+                </ul>
+
+                <h4>Contact Us</h4>
+                <p>For privacy-related questions, contact us through our Discord support server or use the <code>/report</code> command.</p>
+
+                <p><strong>Last updated:</strong> December 2024</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#overview">Overview</a>
+                <a href="#getting-started">Getting Started</a>
+                <a href="#premium">Premium</a>
+                <a href="#commands">Commands</a>
+                <a href="#faq">FAQ</a>
+                <a href="#legal">Legal</a>
+                <a href="#support">Support</a>
+            </div>
+            <p>&copy; 2024 Bridgify. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // FAQ accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all items
+                faqItems.forEach(faqItem => {
+                    faqItem.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Highlight active navigation item
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+
+        function highlightActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveNav);
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        // Handle #legal URL hash
+        function handleHashNavigation() {
+            const hash = window.location.hash;
+            if (hash === '#legal') {
+                const legalSection = document.getElementById('legal');
+                if (legalSection) {
+                    legalSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+
+        // Check hash on page load and hash change
+        window.addEventListener('load', handleHashNavigation);
+        window.addEventListener('hashchange', handleHashNavigation);
+
+
+        // Add some CSS for active nav links
+        const style = document.createElement('style');
+        style.textContent = `
+            .nav-menu a.active {
+                background: var(--primary) !important;
+                color: white !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+// Redirects
+(function () {
+  const url = window.location;
+  const pathname = url.pathname.toLowerCase();
+  const searchParams = new URLSearchParams(url.search);
+  const hash = url.hash.toLowerCase();
+
+  // /discord or ?discord or #discord
+  if (
+    pathname.endsWith("/discord") ||
+    pathname === "/discord/" ||
+    searchParams.has("discord") ||
+    hash === "#discord"
+  ) {
+    window.location.replace("https://discord.gg/VS8Aea9hrj");
+    return;
+  }
+
+  // /aff/sillydev or ?aff=sillydev or #aff=sillydev
+  if (
+    pathname.endsWith("/aff/sillydev") ||
+    searchParams.get("aff") === "sillydev" ||
+    hash === "#aff=sillydev"
+  ) {
+    window.location.replace("https://client.sillydev.co.uk/register?ref=OlPK4dHY");
+    return;
+  }
+
+  // /bot or ?bot or #bot
+  if (
+    pathname.endsWith("/bot") ||
+    searchParams.get("bot") === "bot" ||
+    hash === "#bot"
+  ) {
+    window.location.replace("https://discord.com/oauth2/authorize?client_id=1380207373611827220");
+    return;
+  }
+  // /aff/guilds or ?aff=guilds or #aff=guilds
+  if (
+    pathname.endsWith("/aff/guilds") ||
+    searchParams.get("aff") === "guilds" ||
+    hash === "#aff=guilds"
+  ) {
+    window.location.replace("https://guilds.me/add?r=1148212880722890783");
+    return;
+  }
+})();
+
+    </script>
+</body>
+</html>
